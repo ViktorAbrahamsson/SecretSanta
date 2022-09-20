@@ -1,15 +1,14 @@
-const inputEl = document.querySelector('#inputEl')
+const inputEl = document.querySelector("#inputEl")
+const outputEl = document.querySelector(".output")
+const button = document.getElementById("buttonEl")
 
-console.log("loaded")
+button.addEventListener("click", () => {
+  
+  if (inputEl.value == null || inputEl.value == "") {
+    return
+  }
 
-
-inputEl.addEventListener('keypress', (e) => {
-  if (e.key == 'Enter') {
-    console.log("Enter was pressed")
-
-    
+  if (!outputEl.classList.contains("clicked")) {
+    outputEl.classList.add("clicked")
   }
 })
-
-
-

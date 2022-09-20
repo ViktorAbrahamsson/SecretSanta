@@ -1,32 +1,58 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Secret Santa</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
   <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
   <link rel="stylesheet" href="main.css">
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script> 
-  <script src="/main.js" defer></script>
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <script defer src="/main.js"></script>
 </head>
+
 <body>
+  
   <div class="container">
+    <div class="background">
+      <svg id="mainSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+
+        <defs>
+          <path class="snowFlake"
+            d="M14.75,7.69c0,4.14-3.85,8.56-7.5,7.5C3.28,14,0,10.84,0,6.7S3.3,1.42,7.25.19,14.75,3.55,14.75,7.69Z" />
+        </defs>
+    
+        <g id="container" fill="#FFF" />
+    
+      </svg>
+    </div>
+
+    
     <div class="center">
       <h1>Secret Santa</h1>
-      <input id="inputEl" type="text" />
+      <p>Kopiera in den kod du har fått i fältet och klicka sedan på knappen för att visa vem du ska ge julklappen till.
+      </p>
+
+      <input id="inputEl" type="text" placeholder="Skriv in din kod här..." />
+      <button id="buttonEl">Vem köper jag till?</button>
+
       <div class="output">
         <py-script>
           from array import array
           from cgi import test
           from operator import length_hint
           import random
-      
-          from js import console
-      
+
+          import js
+          from js import document
+          import asyncio
+          from pyodide import create_proxy
+
           coded_length = 15
           key_and_length_offset = 100
-      
+
           def decrypt(name):
             name_array = []
             for l in name:
@@ -43,18 +69,105 @@
                 if iteration - skip_first >= length:
                     return out_name
                 out_name += chr(l - key)
-      
-          input = Element('inputEl').element.value    
-          print('Du ger present till: ', decrypt(input))
-      
-        </py-script>
-      </div>
-      
-    </div>
-    
-  </div>
-  
 
-  
+          def printResult(argument = 0):
+            input = Element('inputEl').element.value
+            output = decrypt(input)
+            print(output)
+
+          function_proxy = create_proxy(printResult)
+
+          document.getElementById('buttonEl').addEventListener("click", function_proxy)
+
+          print(decrypt(input))
+
+        </py-script>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script type="text/javascript">
+    /*
+    Copyright (c) 2022 by Chris Gannon (https://codepen.io/chrisgannon/pen/jOGbObZ)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    */
+
+    let select = s => document.querySelector(s),
+      selectAll = s => document.querySelectorAll(s),
+      mainSVG = select('#mainSVG'),
+      container = select('#container'),
+      snowFlake = select('.snowFlake'),
+      mainTl = gsap.timeline()
+
+    gsap.set('svg', {
+      visibility: 'visible'
+    })
+
+    const getSnowAnim = () => {
+      let clone = snowFlake.cloneNode(true);
+      container.appendChild(clone);
+      let pos = {
+        x: gsap.utils.random(-400, 1200),
+        y: gsap.utils.random(-300, 900)
+      }
+      gsap.set(clone, {
+        transformOrigin: '50% 50%',
+        scale: 0.2,
+        x: pos.x,
+        y: pos.y
+      })
+      let distance = gsap.utils.random(50, 150);
+      let tl = gsap.timeline({
+        repeat: -1, repeatDelay: gsap.utils.random(1, 3),
+        defaults: {
+          ease: 'linear'
+        }
+      });
+      tl.to(clone, {
+        scale: 'random(0.1, 0.51)',
+        ease: 'sine.in',
+        duration: 1
+      })
+        .to(clone, {
+          ease: 'sine.inOut',
+          x: pos.x - distance,
+          y: pos.y + distance,
+          duration: 2
+        }, 0)
+        .to(clone, {
+          ease: 'sine',
+          scale: 0,
+          duration: 1
+        }, 1)
+        .to(clone, {
+          ease: 'sine.inOut',
+          rotation: '-=random(-23, 23)',
+          transformOrigin: '200% 50%',
+          duration: 2
+        }, 0)
+      tl.timeScale((distance / 100))
+      return tl;
+    }
+
+    const init = () => {
+      let num = 1300;
+      for (let i = 0; i < num; i++) {
+        mainTl.add(getSnowAnim(), 0)
+      }
+      mainTl.seek(1000)
+    }
+
+    init()
+  </script>
 </body>
+
 </html>
