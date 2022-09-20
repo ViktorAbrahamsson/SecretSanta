@@ -1,74 +1,98 @@
 
 from array import array
 from cgi import test
+from collections import namedtuple
 from operator import length_hint
 import random
 
-people = {"Johan", "Oskar", "Samuel", "Carina", "Anders", "Viktor", "Gustav", "Linda", "Hakan"}
+Person = namedtuple('Person', ['name', 'gave_to_last_year'])
+
+people = [Person("Johan", "Gustav"), Person("Oscar", "Carina"), Person("Samuel", "Hakan"), Person("Carina", "Viktor"), Person("Anders", "Samuel"),
+         Person("Viktor", "Carina"), Person("Gustav", "Linda"), Person("Linda", "Anders"), Person("Hakan", "Johan")]
+
+random.shuffle(people)
 
 coded_length = 15
 
 key_and_length_offset = 100
 
 def encrypt(name, key=0):
-    output = []
-    out_name = ""
-    output.append(key + key_and_length_offset)
-    length = len(name)
-    output.append(length + key_and_length_offset)
-    for l in name:
-        output.append(ord(l) + key)
-        print(ord(l))
+   if key == 0:
+      key = random.randrange(5,10)
+   output = []
+   out_name = ""
+   output.append(key + key_and_length_offset)
+   length = len(name)
+   output.append(length + key_and_length_offset)
+   for l in name:
+      output.append(ord(l) + key)
 
-    while(len(output) < coded_length):
-        output.append(random.randint(90, 121))
+   while(len(output) < coded_length):
+      output.append(random.randint(90, 121))
 
-    for l in output:
-        out_name += chr(l)
-    return out_name
+   for l in output:
+      out_name += chr(l)
+   return out_name
 
 def decrypt(name):
-    name_array = []
-    for l in name:
-        name_array.append(ord(l))
-    out_name = ""
-    key = name_array[0] - key_and_length_offset
-    length = name_array[1] - key_and_length_offset
-    iteration = -1
-    skip_first = 2
-    for l in name_array:
-        iteration += 1
-        if iteration < skip_first:
+   name_array = []
+   for l in name:
+      name_array.append(ord(l))
+   out_name = ""
+   key = name_array[0] - key_and_length_offset
+   length = name_array[1] - key_and_length_offset
+   iteration = -1
+   skip_first = 2
+   for l in name_array:
+      iteration += 1
+      if iteration < skip_first:
+         continue
+      if iteration - skip_first >= length:
+         return out_name
+      out_name += chr(l - key)
+
+def generate_secret_santas(people_list):
+   original_list = people_list.copy()
+
+   random.shuffle(original_list)
+   random.shuffle(people_list)
+
+   for person in original_list:
+      for target_person in people_list:
+         if person.name == target_person.name or person.gave_to_last_year == target_person.name:
             continue
-        if iteration - skip_first >= length:
-            return out_name
-        out_name += chr(l - key)
-
-print("Enter 0 to encrypt message")
-print("Enter 1 to decrypt message")
-
-mode = input("Input: ")
-
-while(mode != "1" and mode != "0"):
-    mode = input("Invalid input. Please enter either a '1' or a '0': ")
-
-mode_name = ""
-
-if mode == "0":
-    mode_name = "encrypt"
-elif mode == "1":
-    mode_name = "decrypt"
-
-message = input("Please enter the message to " + mode_name + ": ")
-
-if mode == "0":
-    print(encrypt(message, random.randrange(5,10)))
-elif mode == "1":
-    print(decrypt(message))
-else: 
-    print("ERROR")
+         encrypted_recipient = encrypt(target_person.name)
+         print(person.name + " --> " + encrypted_recipient + " | Last year: " + person.gave_to_last_year + " | Decrypted: " + decrypt(encrypted_recipient))
+         people_list.remove(target_person)
+         break
+         
+generate_secret_santas(people)
 
 
+
+# print("Enter 0 to encrypt message")
+# print("Enter 1 to decrypt message")
+
+# mode = input("Input: ")
+
+# while(mode != "1" and mode != "0"):
+#     mode = input("Invalid input. Please enter either a '1' or a '0': ")
+
+# mode_name = ""
+
+# if mode == "0":
+#     mode_name = "encrypt"
+# elif mode == "1":
+#     mode_name = "decrypt"
+
+# message = input("Please enter the message to " + mode_name + ": ")
+
+# if mode == "0":
+#     print(encrypt(message, random.randrange(5,10)))
+# elif mode == "1":
+#     print(decrypt(message))
+# else: 
+#     print("ERROR")
 
 
 # for person in people:
