@@ -5,10 +5,16 @@ from collections import namedtuple
 from operator import length_hint
 import random
 
+year = "2022"
+
+link = "https://secret-santa-viktor-gustav.vercel.app/"
+
 Person = namedtuple('Person', ['name', 'gave_to_last_year'])
 
-people = [Person("Johan", "Gustav"), Person("Oscar", "Carina"), Person("Samuel", "Hakan"), Person("Carina", "Viktor"), Person("Anders", "Samuel"),
-         Person("Viktor", "Carina"), Person("Gustav", "Linda"), Person("Linda", "Anders"), Person("Hakan", "Johan")]
+people = [  Person("Johan", "Gustav"), Person("Oscar", "Carina"), Person("Samuel", "Hakan"),
+            Person("Carina", "Viktor"), Person("Anders", "Samuel"), Person("Viktor", "Oscar"),
+            Person("Gustav", "Linda"), Person("Linda", "Anders"), Person("Hakan", "Johan"), 
+            Person("Matilda", "Oscar")]
 
 random.shuffle(people)
 
@@ -57,13 +63,23 @@ def generate_secret_santas(people_list):
    random.shuffle(original_list)
    random.shuffle(people_list)
 
+   showDecrypted = True
+
    for person in original_list:
       for target_person in people_list:
          if person.name == target_person.name or person.gave_to_last_year == target_person.name:
             continue
          encrypted_recipient = encrypt(target_person.name)
-         print(person.name + " --> " + encrypted_recipient + " | Last year: " + person.gave_to_last_year + " | Decrypted: " + decrypt(encrypted_recipient))
+         #print(person.name + " --> " + encrypted_recipient + " | Last year: " + person.gave_to_last_year + showDecrypted * (" | Decrypted: " + decrypt(encrypted_recipient)))
          people_list.remove(target_person)
+
+         print("Hej " + person.name + "!\n\n" + 
+                "Nu ska du få reda på vem du ska ge i julklappsleken " + year + ".\n" +
+                "Du ska gå in på: " + link + " och mata in koden som kommer i nästa meddelande.\n" +
+                "Om du får den du fick förra året eller om andra problem uppstår har du hittat en bug, säg till då!\n\n" +
+                "God jul!\n\n\n" +
+                 encrypted_recipient + "\n\n\n\n")
+
          break
          
 generate_secret_santas(people)
