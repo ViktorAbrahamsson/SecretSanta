@@ -1,45 +1,47 @@
-// const inputEl = document.querySelector("#inputEl")
-// const outputEl = document.querySelector(".output")
-// const button = document.getElementById("buttonEl")
+console.log(`  *  .  . *       *    .        .        .   *    ..
+.    *        .   ###     .      .        .            *
+   *.   *        #####   .     *      *        *    .
+ ____       *  ######### *    .  *      .        .  *   .
+/   /\  .     ###\#|#/###   ..    *    .      *  .  ..  *
+/___/  ^8/      ###\|/###  *    *            .      *   *
+|   ||%%(        # }|{  #
+|___|,  \\  ejm    }|{`, "God jul önskar Viktor & Gustav!");
 
-// button.addEventListener("click", () => {
-  
-//   if (inputEl.value == null || inputEl.value == "") {
-//     return
-//   }
+const keyAndLengthOffset = 100;
 
-//   if (!outputEl.classList.contains("clicked")) {
-//     outputEl.classList.add("clicked")
-//   }
-// })
-
-
-function decrypt(name, keyAndLengthOffset) {
-  const nameArray = [];
+const decrypt = (name) => {
+  const name_array = [];
   for (const l of name) {
-      nameArray.push(l.charCodeAt(0));
+      name_array.push(l.charCodeAt(0));
   }
-  let outName = "";
-  const key = nameArray[0] - keyAndLengthOffset;
-  const length = nameArray[1] - keyAndLengthOffset;
+  let out_name = "";
+  const key = name_array[0] - keyAndLengthOffset;
+  const length = name_array[1] - keyAndLengthOffset;
   let iteration = -1;
-  const skipFirst = 2;
-  for (const l of nameArray) {
+  const skip_first = 2;
+  for (const l of name_array) {
       iteration++;
-      if (iteration < skipFirst) {
+      if (iteration < skip_first) {
           continue;
       }
-      if (iteration - skipFirst >= length) {
-          return outName;
+      if (iteration - skip_first >= length) {
+          return out_name;
       }
-      outName += String.fromCharCode(l - key);
+      out_name += String.fromCharCode(l - key);
   }
-  return outName;
-}
+};
 
-document.getElementById("buttonEl").addEventListener("click", function () {
-  const keyAndLengthOffset = 100; // You can adjust this value as needed
-  const inputString = document.getElementById("inputEl").value;
+const decryptAndDisplay = () => {
+  const inputString = document.getElementById("inputString").value;
   const decryptedString = decrypt(inputString, keyAndLengthOffset);
   document.querySelector(".output").textContent = decryptedString;
+};
+
+document.querySelector(".decryptButton").addEventListener("click", decryptAndDisplay);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+      event.preventDefault();
+      decryptAndDisplay();
+  }
 });
