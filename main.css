@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700;800&display=swap');
+
 * {
   box-sizing: none;
   padding: 0;
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body,
@@ -64,12 +67,15 @@ h1 {
 
 p {
   text-align: center;
+  max-width: 500px;
+  font-size: 1rem;
+  line-height: 1.6rem;
 }
 
 input {
   border: 1px solid white;
   border-radius: 7px;
-  padding: 5px 10px;
+  padding: 10px 10px;
   color: #042c4f;
 }
 
@@ -79,7 +85,7 @@ input,
 }
 
 button {
-  padding: 5px 10px;
+  padding: 10px 10px;
   background-color: transparent;
   border: none;
   border: 1px solid white;
@@ -87,6 +93,7 @@ button {
   cursor: pointer;
   color: white;
   border-radius: 7px;
+
 }
 button:hover {
   background-color: white;

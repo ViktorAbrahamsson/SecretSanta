@@ -1,94 +1,57 @@
 <!DOCTYPE html>
-<html lang="sv">
-
+<html lang="sv-SE">
 <head>
+  <!-- Meta -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=5.0">
   <title>Secret Santa</title>
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Used by background animation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  
+  <!-- Link to files -->
   <link rel="stylesheet" href="main.css">
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   <script defer src="/main.js"></script>
 </head>
 
 <body>
-  
+  <div class="background">
+    <svg id="mainSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+      <defs>
+        <path class="snowFlake"
+          d="M14.75,7.69c0,4.14-3.85,8.56-7.5,7.5C3.28,14,0,10.84,0,6.7S3.3,1.42,7.25.19,14.75,3.55,14.75,7.69Z" />
+      </defs>
+      <g id="container" fill="#FFF" />
+    </svg>
+  </div>
+
   <div class="container">
-    <div class="background">
-      <svg id="mainSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+    <section class="center">
+      <h1>Secret Santa 2023!</h1>
 
-        <defs>
-          <path class="snowFlake"
-            d="M14.75,7.69c0,4.14-3.85,8.56-7.5,7.5C3.28,14,0,10.84,0,6.7S3.3,1.42,7.25.19,14.75,3.55,14.75,7.69Z" />
-        </defs>
-    
-        <g id="container" fill="#FFF" />
-    
-      </svg>
-    </div>
-
-    
-    <div class="center">
-      <h1>Secret Santa</h1>
-      <p>Kopiera in den kod du har fått i fältet och klicka sedan på knappen för att visa vem du ska ge julklappen till.
+      <p>
+        Kopiera in den kod du har fått i fältet och klicka sedan på knappen för att visa vem du ska ge julklappen till.
       </p>
 
       <input id="inputEl" type="text" placeholder="Skriv in din kod här..." />
-      <button id="buttonEl">Vem köper jag till?</button>
 
-      <div class="output">
-        <py-script>
-          from array import array
-          from cgi import test
-          from operator import length_hint
-          import random
+      <button id="buttonEl" aria-label="Se vem du ska köpa till.">
+        Vem köper jag till?
+      </button>
 
-          import js
-          from js import document
-          import asyncio
-          from pyodide import create_proxy
-
-          coded_length = 15
-          key_and_length_offset = 100
-
-          def decrypt(name):
-            name_array = []
-            for l in name:
-                name_array.append(ord(l))
-            out_name = ""
-            key = name_array[0] - key_and_length_offset
-            length = name_array[1] - key_and_length_offset
-            iteration = -1
-            skip_first = 2
-            for l in name_array:
-                iteration += 1
-                if iteration < skip_first:
-                    continue
-                if iteration - skip_first >= length:
-                    return out_name
-                out_name += chr(l - key)
-
-          def printResult(argument = 0):
-            input = Element('inputEl').element.value
-            output = decrypt(input)
-            print(output)
-
-          function_proxy = create_proxy(printResult)
-
-          document.getElementById('buttonEl').addEventListener("click", function_proxy)
-
-          print(decrypt(input))
-
-        </py-script>
-
-      </div>
-
-    </div>
-
+      <div class="output"></div>
+    </section>
   </div>
-
 
   <script type="text/javascript">
     /*
@@ -169,5 +132,4 @@
     init()
   </script>
 </body>
-
 </html>
