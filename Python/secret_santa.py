@@ -6,23 +6,23 @@ from operator import length_hint
 import random
 import numpy as np
 
-year = "2024"
+year = "2025"
 
 link = "https://secret-santa-viktor-gustav.vercel.app"
 
 Person = namedtuple('Person', ['name', 'family', 'given_to'])
 
-#                                                  2021      2022        2023
-people = [  Person("Johan",   "Knutsson",       {"Gustav",  "Oscar",    "Anders"}), 
-            Person("Oscar",   "Knutsson",       {"Carina",  "Hakan",    "Linda"}), 
-            Person("Samuel",  "Knutsson",       {"Hakan",   "Johan",    "Viktor"}),
-            Person("Carina",  "Knutsson",       {"Viktor",  "Linda",    "Gustav"}), 
-            Person("Anders",  "Knutsson",       {"Samuel",  "Carina",   "Oscar"}), 
-            Person("Viktor",  "Abrahamsson",    {"Oscar",   "Anders",   "Hakan"}),
-            Person("Gustav",  "Abrahamsson",    {"Linda",   "Viktor",   "Samuel"}), 
-            Person("Linda",   "Abrahamsson",    {"Anders",  "Gustav",   "Johan"}), 
-            Person("Hakan",   "Abrahamsson",    {"Johan",   "Samuel",   "Carina"}),
-            Person("Frida",   "Knutsson",       {"Samuel",  "Samuel",   "Samuel"})]
+#                                                  2021      2022        2023        2024
+people = [  Person("Johan",   "Knutsson",       {"Gustav",  "Oscar",    "Anders",   "Linda"}),
+            Person("Oscar",   "Knutsson",       {"Carina",  "Hakan",    "Linda",    "Viktor"}),
+            Person("Samuel",  "Knutsson",       {"Hakan",   "Johan",    "Viktor",   "Carina"}),
+            Person("Carina",  "Knutsson",       {"Viktor",  "Linda",    "Gustav",   "Johan"}),
+            Person("Anders",  "Knutsson",       {"Samuel",  "Carina",   "Oscar",    "Gustav"}),
+            Person("Viktor",  "Abrahamsson",    {"Oscar",   "Anders",   "Hakan",    "Samuel"}),
+            Person("Gustav",  "Abrahamsson",    {"Linda",   "Viktor",   "Samuel",   "Anders"}),
+            Person("Linda",   "Abrahamsson",    {"Anders",  "Gustav",   "Johan",    "Frida"}),
+            Person("Hakan",   "Abrahamsson",    {"Johan",   "Samuel",   "Carina",   "Oscar"}),
+            Person("Frida",   "Knutsson",       {"Samuel",  "Samuel",   "Samuel",   "Hakan"})]
 
 
 
@@ -94,7 +94,7 @@ def generate_secret_santas(people_list):
          # Don't give to yourself, or to the people you have given to
          if person.name == target_person.name or target_person.name in person.given_to:
             continue
-         
+
          # # Introduce family bias if desired not met
          # if person.family == target_person.family:
          #    if random.random() < family_bias or num_same_fam >= 2:
@@ -114,7 +114,7 @@ def generate_secret_santas(people_list):
 
          output.append((person.name, target_person.name, encrypted_recipient))
 
-         # print("Hej " + person.name + "!\n\n" + 
+         # print("Hej " + person.name + "!\n\n" +
          #        "Nu ska du få reda på vem du ska ge i julklappsleken " + year + ".\n" +
          #        "Du ska gå in på: " + link + " och mata in koden som kommer i nästa meddelande.\n" +
          #        "Om du får den du fick förra året eller om andra problem uppstår har du hittat en bug, säg till då!\n\n" +
@@ -131,6 +131,7 @@ def print_message(gifter, receiver, encrypted_receiver):
                 "Nu ska du få reda på vem du ska ge i julklappsleken " + year + ".\n" + \
                 "Du ska gå in på: " + link + " och mata in koden som kommer i nästa meddelande.\n" + \
                 "Om du får den du fick förra året eller om andra problem uppstår, hör av dig!\n\n" + \
+                "Budget: 300kr\n\n" + \
                 "God jul!\n\n\n" + \
                  encrypted_receiver + "\n\n\n\n"
    print(message)
@@ -153,10 +154,10 @@ def check_output(gift_list):
             if transaction[1] in person.given_to:
                print(" ======================== ERROR ========================")
                return
-               
+
    print("All checks OK!\n")
    # f.write("All checks OK!\n\n")
-   
+
 
 
 # Generate secret santa with a tolerance "[min, max]" of the number of people who give to their own family members
@@ -171,7 +172,7 @@ def generate(min, max):
 
    print_all_messages(gift_list)
 
-   
+
 
    #print("Found a 'num_same' = " + str(num_same))
    print("Number of people = " + str(num_people))
@@ -225,7 +226,7 @@ print("\n")
 #     print(encrypt(message, random.randrange(5,10)))
 # elif mode == "1":
 #     print(decrypt(message))
-# else: 
+# else:
 #     print("ERROR")
 
 
