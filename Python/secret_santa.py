@@ -6,23 +6,23 @@ from operator import length_hint
 import random
 import numpy as np
 
-year = "2025"
+year = "2026"
 
 link = "https://secret-santa-viktor-gustav.vercel.app"
 
 Person = namedtuple('Person', ['name', 'family', 'given_to'])
 
-#                                                  2021      2022        2023        2024
-people = [  Person("Johan",   "Knutsson",       {"Gustav",  "Oscar",    "Anders",   "Linda"}),
-            Person("Oscar",   "Knutsson",       {"Carina",  "Hakan",    "Linda",    "Viktor"}),
-            Person("Samuel",  "Knutsson",       {"Hakan",   "Johan",    "Viktor",   "Carina"}),
-            Person("Carina",  "Knutsson",       {"Viktor",  "Linda",    "Gustav",   "Johan"}),
-            Person("Anders",  "Knutsson",       {"Samuel",  "Carina",   "Oscar",    "Gustav"}),
-            Person("Viktor",  "Abrahamsson",    {"Oscar",   "Anders",   "Hakan",    "Samuel"}),
-            Person("Gustav",  "Abrahamsson",    {"Linda",   "Viktor",   "Samuel",   "Anders"}),
-            Person("Linda",   "Abrahamsson",    {"Anders",  "Gustav",   "Johan",    "Frida"}),
-            Person("Hakan",   "Abrahamsson",    {"Johan",   "Samuel",   "Carina",   "Oscar"}),
-            Person("Frida",   "Knutsson",       {"Samuel",  "Samuel",   "Samuel",   "Hakan"})]
+#                                                  2021      2022        2023        2024         2025
+people = [  Person("Johan",   "Knutsson",       {"Gustav",  "Oscar",    "Anders",   "Linda",    "Viktor"}),
+            Person("Oscar",   "Knutsson",       {"Carina",  "Hakan",    "Linda",    "Viktor",   "Frida"}),
+            Person("Samuel",  "Knutsson",       {"Hakan",   "Johan",    "Viktor",   "Carina",   "Linda"}),
+            Person("Carina",  "Knutsson",       {"Viktor",  "Linda",    "Gustav",   "Johan",    "Samuel"}),
+            Person("Anders",  "Knutsson",       {"Samuel",  "Carina",   "Oscar",    "Gustav",   "Hakan"}),
+            Person("Viktor",  "Abrahamsson",    {"Oscar",   "Anders",   "Hakan",    "Samuel",   "Carina"}),
+            Person("Gustav",  "Abrahamsson",    {"Linda",   "Viktor",   "Samuel",   "Anders",   "Johan"}),
+            Person("Linda",   "Abrahamsson",    {"Anders",  "Gustav",   "Johan",    "Frida",    "Oscar"}),
+            Person("Hakan",   "Abrahamsson",    {"Johan",   "Samuel",   "Carina",   "Oscar",    "Anders"}),
+            Person("Frida",   "Knutsson",       {"Samuel",  "Samuel",   "Samuel",   "Hakan",    "Gustav"})]
 
 
 
